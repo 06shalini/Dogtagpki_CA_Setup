@@ -43,6 +43,7 @@ class SetupCA(object):
         self.cer_req_cmd = "pki ca-cert-request-submit --profile " + self.ca_profile + " --csr-file " + self.cert_name + ".csr"
         self.approave_req_cmd = "pki -d " + self.ca_database + " -c " + self.ds_password + \
                                 " -n caadmin   ca-cert-request-review " + self.req_id + " -action approve"
+        self.download_cert_cmd = "pki ca-cert-show " + self.req_id + "--output " + self.cert_name + ".crt"
 
     def setup_ca(self):
         self.set_setup_ca_commnad()
@@ -60,6 +61,12 @@ class SetupCA(object):
         child.expect("Generating Key.")
         child.sendline(self.ca_csr_gen_2_cmd)
         child.sendline(self.cer_req_cmd)
+        child.expect("Submitted certificate request")
 
     def approve_cert_request(self):
-        pass
+        child = pexpect.spawn(self.approave_req_cmd)
+        child.expect("Operation Result: success")
+
+    def download_cert(self):
+        child = pexpect.spawn(self.download_cert_cmd)
+        child.expect("Status: VALID")
