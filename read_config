@@ -1,0 +1,29 @@
+from ConfigParser import ConfigParser
+
+
+class ReadConfig(object):
+    """
+    Class read config file globals.cfg and load key values.
+    """
+
+    def __init__(self, str_conf_file):
+
+        self.obj_configparser = ConfigParser()
+        self.obj_configparser.read(str_conf_file)
+
+    def get_param_values(self, str_section, str_param):
+        """
+        This method returns value of the parameter in the section
+        """
+        return self.obj_configparser.get(str_section, str_param, 0)
+
+    def get_params_in_section(self, str_section):
+        """
+        This method reads section specified in argument.
+        :return: dictionary with key and value loaded of corresponding section.
+        """
+        dict_param_value = {}
+        if self.obj_configparser.has_section(str_section):
+            for str_key in self.obj_configparser.options(str_section):
+                dict_param_value[str_key] = self.get_param_values(str_section, str_key)
+        return dict_param_value
