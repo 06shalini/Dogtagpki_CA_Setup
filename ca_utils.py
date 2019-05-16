@@ -14,6 +14,7 @@ class SetupCA(object):
         self.obj_conf = read_config.ReadConfig(self.conf_file)
         self.conf_dict = self.obj_conf.get_param_in_section('CA')
         self.set_attributs()
+        self.set_setup_ca_commnad()
 
     def set_attributs(self):
         self.ca_database = self.conf_dict('CA_DATABASE_REPO')
