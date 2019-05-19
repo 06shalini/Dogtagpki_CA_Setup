@@ -6,14 +6,16 @@ class SetupDS(object):
     """
     Class setup DS with configuration values provided in globals.cfg
     """
-    conf_file = 'globals.cfg'
 
-    def __init__(self):
-        self.obj_conf = read_config.ReadConfig(self.conf_file)
+    def __init__(self, conf_file):
+        self.obj_conf = read_config.ReadConfig(conf_file)
         self.conf_dict = self.obj_conf.get_param_in_section('DS')
         self.set_attributs()
 
     def set_attributs(self):
+        """
+        This method sets config attributes from dictionary read from config file.
+        """
         self.hostname = self.conf_dict('HOST_NAME')
         self.user = self.conf_dict('D_USER')
         self.group = self.conf_dict('D_GROUP')
@@ -26,6 +28,9 @@ class SetupDS(object):
         self.suffix = "dc = " + a[1] + ", dc =" + a[2]
 
     def set_setup_ds_commnad(self):
+        """
+        This method creates command to setup a DS instance with provided configurations in config file.
+        """
         self.setup_ds_cmd = ["setup-ds.pl --silent \\"]
         self.setup_ds_cmd.append("General.FullMachineName =" + self.hostname + " \\")
         self.setup_ds_cmd.append("General.SuiteSpotUserID =" + self.user + " \\")
@@ -43,6 +48,9 @@ class SetupDS(object):
         self.ds_service_start_cmd = "systemctl start dirsrv.target"
 
     def setup_ds(self):
+        """
+        This method setup a DS instance with provided configuration in config file
+        """
         self.set_setup_ds_commnad()
         with open('logfile', "w") as outfile:
             subprocess.call(self.setup_ds_cmd, stdout=outfile)

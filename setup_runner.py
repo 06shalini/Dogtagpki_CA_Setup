@@ -5,10 +5,11 @@
 import setup_ds
 import ca_utils
 
-obj_setupds = setup_ds.SetupDS()
+conf_file = 'globals.cfg'
+obj_setupds = setup_ds.SetupDS(conf_file)
 obj_setupds.setup_ds()
 
-obj_setupca = ca_utils.SetupCA()
+obj_setupca = ca_utils.SetupCA(conf_file)
 obj_setupca.setup_ca()
 
 # To execute following methods SAN support has to be added to the defined CA profile
